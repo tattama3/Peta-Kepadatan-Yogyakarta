@@ -39,7 +39,7 @@
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-7.841912562999958,110.32565126412075],[-7.764627900999962,110.42425583287937]]);
+        }).fitBounds([[-7.841535695961296,110.30583576653109],[-7.7648897501761756,110.44459135803862]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -119,14 +119,20 @@
             this._div = L.DomUtil.create('div',
             'leaflet-control abstract');
             this._div.id = 'abstract'
-
-                abstract.show();
+                this._div.setAttribute("onmouseenter", "abstract.show()");
+                this._div.setAttribute("onmouseleave", "abstract.hide()");
+                this.hide();
                 return this._div;
             };
+            abstract.hide = function () {
+                this._div.classList.remove("abstractUncollapsed");
+                this._div.classList.add("abstract");
+                this._div.innerHTML = 'i'
+            }
             abstract.show = function () {
                 this._div.classList.remove("abstract");
                 this._div.classList.add("abstractUncollapsed");
-                this._div.innerHTML = 'Peta ini memberikan informasi jumlah penduduk, kepadatan penduduk, dan luas wilayah di kota Yogyakarta. Sumber data diperoleh dari kota Yogyakarta Dalam Angka yang diterbitkan Badan Pusat Statistika Kota Yogyakarta pada tahun 2024.';
+                this._div.innerHTML = 'Peta ini memberikan informasi jumlah penduduk, kepadatan penduduk, dan luas wilayah di kota Yogyakarta. Sumber data diperoleh dari kota Yogyakarta Dalam Angka yang diterbitkan Badan Pusat Statistika Kota Yogyakarta pada tahun 2024. Dibuat oleh Tattamaroh NIT (2502010034)';
         };
         abstract.addTo(map);
         var zoomControl = L.control.zoom({
@@ -157,8 +163,7 @@
                         <td colspan="2">' + (feature.properties['LUAS'] !== null ? autolinker.link(String(feature.properties['LUAS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Field</th>\
-                        <td class="visible-with-data" id="Field">' + (feature.properties['Field'] !== null ? autolinker.link(String(feature.properties['Field']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Field" colspan="2"><strong>Field</strong><br />' + (feature.properties['Field'] !== null ? autolinker.link(String(feature.properties['Field']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['join_Luas'] !== null ? autolinker.link(String(feature.properties['join_Luas']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
